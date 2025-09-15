@@ -1,0 +1,131 @@
+/*
+    セレクタとプロパティと値に分かれている
+*/
+body {
+    color: gray;
+}
+
+/*
+    idを書くときは#を付ける
+*/
+#headline {
+    color: blue;
+}
+
+/*
+    クラス名を書くときは.を付ける
+*/
+.temp {
+    color: red;
+}
+
+/*
+    大量に指定もできる
+*/
+#hoge, #poyo {
+    color: black;
+}
+
+/*
+    子孫セレクタ
+    これは「◯◯タグ内にある◯◯タグにだけデザインを適用させたい」ときに使うものです。
+*/
+body #headline h1 {
+    color: orange;
+}
+
+body #headline p .light {
+    color: black;
+    font-size: 50px;
+}
+
+/*
+    フォントサイズ系
+*/
+.px {
+    font-size: 20px;
+    color: #000000;
+}
+
+.em {
+    font-size: 1.2em;
+    color: orange;
+}
+
+/*
+    フォントの位置系
+*/
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+/*
+    背景色
+*/
+.temp2 {
+    background-color: #b6ecff;
+}
+
+/*
+    線を引く(囲う)
+*/
+.solid {
+    border: solid 2px gray;
+}
+
+.dotted {
+    border: dotted 2px gray;
+}
+
+.dashed {
+    border: dashed 2px gray;
+}
+
+.double {
+    border: double 2px gray;
+}
+
+.solid1px {
+    border: solid 1px gray;
+}
+
+/*
+    どこに線を引くか指定
+*/
+.rei1 {
+    border-top: solid 2px #FFA07A;
+    border-left: solid 2px #FFA07A;
+}
+
+.rei2 {
+    border-bottom: solid 2px #FFA07A;
+    border-right: solid 2px #FFA07A;
+}
+
+/*文字幅*/
+.parent {
+    width: 50%;
+    background: yellow;
+}
+
+#whB_test {
+    color: black;
+}
+
+.grandpa {
+    width: 200px;
+    background: silver;
+}
+
+.parent p {
+    width: 50%;
+    background: orange;
+}
+
+.koyo img {
+    width: 200px;
+}
