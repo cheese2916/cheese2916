@@ -87,8 +87,6 @@ h2 {
     padding: auto auto;
     /*文字周りの余白*/
     margin-top: 100px;
-    margin-left: 300px;
-    margin-right: 300px;
     text-align: center;
 }
 
@@ -104,4 +102,32 @@ h2 {
 
 body {
     background: lightgray;
+}
+
+.marquee-right {
+	overflow: hidden;
+}
+.marquee-right ul {
+	animation: marquee-right 40s linear infinite; /* 20s スクロール1回にかかる秒数 */
+	display: flex;
+	margin: 0;
+	padding: 0;
+	width: max-content;
+}
+.marquee-right ul li {
+	list-style: none;
+	padding: 0 5px; /* 余白 */
+	width: calc(100vw / 3 - 10px); /* 3 写真の枚数にあわせる */
+}
+.marquee-right img {
+	display: block;
+	width: 100%;
+}
+@keyframes marquee-right {
+	from {
+		transform: translateX(0%);
+	}
+	to {
+		transform: translateX(-50%);
+	}
 }
