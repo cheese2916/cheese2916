@@ -8,6 +8,7 @@
     <link rel="icon" href="../images/butter.jpg">
     <link rel="stylesheet" href="../css/ProgramingPageStyle.css">
     <link href="https://use.fontawesome.com/releases/v7.2.0/css/all.css" rel="stylesheet">
+    <script src="../scripts/ProgramingScript.js" defer></script>
 </head>
 
 <body>
@@ -29,13 +30,20 @@
             <h2>プログラミング</h2>
 
             <p>プログラミングの技術的内容について書く予定</p>
-            <p>　</p>
-            <p>　</p>
-            <p>　</p>
-            <p>　</p>
-            <p>　</p>
-            <p>　</p>
-            <p>　</p>
+            <div class="grid">
+                <a href="#" class="item">
+                    <div class="itemtag">C++</div>
+                    <div class="itemtag">初級</div>
+                    <img src="../images/hatena.png" alt="">
+                    <p>仮置き01</p>
+                </a>
+                
+            </div>
+
+            <div class="pager" id="pager">
+                <button id="prevBtn" onclick="prevPage()">←</button>
+                <button id="nextBtn" onclick="nextPage()">→</button>
+            </div>
         </body>
 
         <footer>

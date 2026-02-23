@@ -103,3 +103,102 @@ h2 {
 body {
     background: lightgray;
 }
+
+.grid {
+    display: grid;
+
+    /* 横に3列並べる */
+    grid-template-columns: repeat(3, 1fr);
+
+    /* 要素同士の間隔 */
+    gap: 20px;
+
+    /* 中央寄せ（全体） */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.item {
+    display: block;
+    /* aタグをdivみたいに */
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    transition: 0.2s;
+}
+
+.item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.itemtag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #ffeb3b;
+    border: solid 2px;
+    border-radius: 999px;
+    /* pill型 */
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* hover時 */
+.item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pager {
+    display: flex;
+    flex-wrap: warp;
+    justify-content: center;
+    /* 中央寄せ */
+    align-items: center;
+    gap: 8px;
+    /* ボタン間の隙間 */
+    margin-top: 20px;
+    font-family: Arial;
+}
+
+.pager button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 50%;
+    background: #eee;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pager button:hover {
+    background: #505050;
+    color: white;
+}
+
+.page-btn.active {
+    background: #505050;
+    color: white;
+    font-weight: bold;
+}
+
+.page-btn:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
