@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ばた～の部屋/DxLibを立ち上げて描画させてみた</title>
+    <meta name="description" content="ゲーム・プログラミングなどの備忘録">
+    <meta charset="UTF-8">
+    <link rel="icon" href="../../images/butter.jpg">
+    <link rel="stylesheet" href="css/Article01Style.css">
+    <link href="https://use.fontawesome.com/releases/v7.2.0/css/all.css" rel="stylesheet">
+    <script src="script/Article01Script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                ばた～の部屋
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html" class="btn-border-bottom">ホーム</a></li>
+                    <li><a href="../gamepage.html" class="btn-border-bottom">ゲーム</a></li>
+                    <li><a href="../programingpage.html" class="btn-border-bottom">プログラミング</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <body>
+            <h2>DxLibを立ち上げて描画させてみた</h2>
+            <p>2026/02/26</p>
+
+            <p>★本記事ではDxLibを導入し、四角形などの図形を表示させるまでを目標としています</p>
+
+            <h3>DxLibの導入</h3>
+            まずは<a href="https://dxlib.xsrv.jp/dxdload.html" target="_blank">こちら</a>からDxLib本体をダウンロードします。<br>
+            なお本記事では、『Windows版のVisualStudio( C++ )用(Ver3.24f)』で話を進めていきます。<br><br>
+
+            ダウンロード出来たらCドライブで展開します。[※1]<br><br>
+
+            <h3>プロジェクトの作成</h3>
+            展開できたら、次にVisualStudioでの設定を行います。<br>
+            今回は『空のプロジェクト[C++]』を使ってプロジェクトを作成します。<br>
+            テンプレートの検索に入れると出てきます。<br>
+            <img src="images/Article01_1.png" alt="空のプロジェクトを選択している図" width="720"><br>
+            プロジェクトの名前とプロジェクト位置は任意のものOKです。<br><br>
+
+            <h3>プロジェクトの設定</h3>
+            さて、次にめんどくさ～いプロジェクトの設定を行います。<br>
+            1.ソースファイルに1つcppファイルを作っておきます(私はMain.cppを作りました)<br>
+            2.先ほど作ったプロジェクトの上部タブ「プロジェクト(P)→プロパティ(P)」を開きます。<br>
+            3.構成→すべて、プラットフォーム→すべて にして、詳細→文字セット→マルチバイト文字セットを使用するに設定。<br>
+            4.構成→すべて、プラットフォーム→すべて にして、C/C++→全般→追加のインクルードディレクトリ→【C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用】を設定します。[※2]<br>
+            5.構成→すべて、プラットフォーム→すべて にして、リンカー→全般→追加のライブラリディレクトリに4と同じように設定します。<br>
+            6.構成→すべて、プラットフォーム→すべて にして、リンカー→システム→サブシステムをWindowsに変更します。<br>
+            7.適用してプロパティページを閉じます。<br>
+            8.x86になっている場合はx64に直します。<br>
+            <img src="images/Article01_2.png" alt="32bitから64bitソフトウェアに変更している図" width="480"><br>
+            9.最後にコード右下をクリックして、エンコード付きで保存→日本語対応しているUTF-8 with BOMに変更します。<br>
+            <img src="images/Article01_3.png" alt="コードを日本語対応させている図" width="480"><br><br><br>
+
+
+            これにて設定完了です。<br>
+            実際に最低限のコードを書いてテストしてみます。<br><br>
+
+            <h3>コードのテスト</h3>
+            【DxLibを起動して黒画面を表示させるコード】
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#include "DxLib.h"
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+{
+	SetWindowSize(960, 540);
+	ChangeWindowMode(TRUE);
+	if (DxLib_Init() == -1)
+	{
+		return -1;
+	}
+
+	WaitKey();
+	DxLib_End();
+	return 0;
+}</code></pre>
+            </div>
+
+            実行すると黒画面が表示されました。<br>
+            ふむ...これでゲームを作っていけるわけですね。<br><br>
+            この下執筆中により空白<br><br><br>
+            
+            注釈について<br>
+            <div class="annotation">
+                ※1 パスの読み込み時に影響のない場所を選びました。長すぎたり、OneDriveと同期していたりすると正常に動かない場合があります。<br>
+                ※2 DxLibを展開したフォルダの中に、VC用というフォルダがあるので、そのフォルダのパスをコピーします。
+            </div>
+        </body>
+
+        <footer>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="https://x.com/_cheese_2916" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-brands fa-square-twitter" id="twitter-ico"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <img src="../../images/Page01QR.png" alt="QRコード" id="qr-ico">
+                    </li>
+                </ul>
+            </nav>
+        </footer>
+    </div>
+</body>
+
+</html>
