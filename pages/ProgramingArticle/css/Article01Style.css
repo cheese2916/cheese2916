@@ -148,3 +148,53 @@ p {
 .annotation {
     font-size: 0.75em;
 }
+
+.annotation-header {
+    border-top: solid 3px black;
+    font-size: 1.2em;
+}
+
+h3 {
+    position: relative;
+    background: #f1f8ff;
+    padding: 0.25em 0.5em;
+    border-left: solid 2em #5c9ee7;
+}
+
+h3:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f303";
+    position: absolute;
+    padding: 0em;
+    color: white;
+    font-weight: 900;
+    left: -1.35em;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.code-text {
+    position: relative;
+    padding-left: 30px;
+    color: black;
+}
+
+.code-text:before {
+    position: absolute;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f121";
+    background: #c9e2ff;
+    color: black;
+    font-size: 15px;
+    border-radius: 50%;
+    left: 0;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
