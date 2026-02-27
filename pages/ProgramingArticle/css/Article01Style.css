@@ -114,6 +114,7 @@ body {
     font-family: Consolas, monospace;
     font-size: 14px;
     overflow-x: auto;
+    line-height: 20px;
 }
 
 .code-block pre {

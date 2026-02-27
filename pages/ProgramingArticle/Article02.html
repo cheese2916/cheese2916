@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ばた～の部屋/クラス分けと画像読み込み</title>
+    <meta name="description" content="ゲーム・プログラミングなどの備忘録">
+    <meta charset="UTF-8">
+    <link rel="icon" href="../../images/butter.jpg">
+    <link rel="stylesheet" href="css/Article01Style.css">
+    <link href="https://use.fontawesome.com/releases/v7.2.0/css/all.css" rel="stylesheet">
+    <script src="script/Article01Script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                ばた～の部屋
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html" class="btn-border-bottom">ホーム</a></li>
+                    <li><a href="../gamepage.html" class="btn-border-bottom">ゲーム</a></li>
+                    <li><a href="../programingpage.html" class="btn-border-bottom">プログラミング</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <body>
+            <h2>クラス分けと画像読み込み</h2>
+            <p>最終更新日 2026/02/27</p>
+
+            <p>★本記事ではC++のクラス分け及び画像ファイルの読み込みの成功を目指しています。</p>
+            参考にした関数リファレンスサイトは<a href="https://dxlib.xsrv.jp/dxfunc.html" target="_blank">こちら</a>
+
+            <h3>クラス分け</h3>
+            そもそもクラス分けといってもどこから手を付ければ・・・といった具合だったので<br>
+            前回のコードを綺麗にリファクタしてやるぞ！な気分で書きました。<br><br>
+
+            <div class="code-text">前回のコード</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#include "DxLib.h"
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+{
+	SetGraphMode(1080, 720, 32);
+	ChangeWindowMode(TRUE);
+	if (DxLib_Init() == -1)
+	{
+		return -1;
+	}
+
+	DrawBox(100, 100, 980, 620, GetColor(255, 255, 0), TRUE);
+
+	WaitKey();
+	DxLib_End();
+	return 0;
+}</code></pre>
+            </div><br>
+            前回のままではmain関数に全て任せてしまっているので、明らかな責務過多です。。。<br>
+            とりあえずは、『ゲーム画面を管理してくれるクラス』と『そもそものゲームループを管理してくれるクラス』に分けたいと思います。<br><br>
+
+            ということで作ってみたヘッダファイルがこちらです。<br><br>
+
+            <!--Game.hppのコードはここから-->
+            <div class="code-text">Game.hpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#pragma once;
+
+#include "DxLib.h"
+#include "GameScreen.hpp"
+
+class Game
+{
+public:
+
+	/// &lt;summary&gt;
+	/// Initializes game and DxLib.
+	/// &lt;/summary&gt;
+	/// &lt;returns&gt;If an error occurs or some kind of event, returns false.&lt;/returns&gt;
+	bool Initialize();
+
+	/// &lt;summary&gt;
+	/// Runs the main game loop.
+	/// &lt;/summary&gt;
+	void Run();
+
+	/// &lt;summary&gt;
+	/// Finalizes the game and releases resources.
+	/// &lt;/summary&gt;
+	void Finalize();
+protected:
+private:
+	GameScreen m_gs;
+};</code></pre>
+            </div><br>
+
+
+
+            <!--GameScreen.hppのコードはここから-->
+            <div class="code-text">GameScreen.hpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#pragma once
+
+#include "DxLib.h"
+#include "Vector2.hpp"
+
+/// &lt;summary&gt;
+/// This class manages the game screen.
+/// &lt;/summary&gt;
+class GameScreen
+{
+public:
+	/// &lt;summary&gt;
+	/// Initializes the game screen.
+	/// &lt;/summary&gt;
+	void Create();
+
+	/// &lt;summary&gt;
+	/// Sets the screen size.
+	/// &lt;/summary&gt;
+	/// &lt;param name="width"&gt;Screen Width (X)&lt;/param&gt;
+	/// &lt;param name="height"&gt;Screen Height (Y)&lt;/param&gt;
+	void SetScreenSize(int width, int height);
+
+	/// &lt;summary&gt;
+	/// Sets the full screen mode.
+	/// &lt;/summary&gt;
+	/// &lt;param name="enable"&gt;True to enable full screen mode&lt;/param&gt;
+	void SetFullScreen(bool enable)const;
+
+	/// &lt;summary&gt;
+	/// Gets the screen size.
+	/// &lt;/summary&gt;
+	/// &lt;returns&gt;Screen Rectangle Size&lt;/returns&gt;
+	Vector2 GetScreenSize()const;
+protected:
+private:
+	//---Resolution Settings---//
+
+	const int m_renderWidth = 1920;
+	const int m_renderHeight = 1080;
+	const int m_colorBitDepth = 32;
+
+	//---Setting the screen size at initialization---//
+
+	int m_currentScreenWidth = 1280;
+	int m_currentScreenHeight = 720;
+	const bool m_baseFullScreenFlag = false;
+};</code></pre>
+            </div><br>
+
+            はい、これで呼び出し元がスッキリしました！<br>
+            あとはcppファイル側にさっきまでmainに直書きしていたものを移すだけですね！<br><br>
+
+            新しく実装したゲームループのコードも載せておきます。<br>
+            <!--GameScreen.hppのコードはここから-->
+            <div class="code-text">Game.cpp/Run</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>void Game::Run()
+{
+	while (ProcessMessage() == 0)
+	{
+		if (CheckHitKey(KEY_INPUT_ESCAPE))
+		{
+			break;
+		}
+
+		DrawBox(100, 100, 980, 620, GetColor(255, 255, 0), TRUE);
+	
+		ScreenFlip();
+	}
+}</code></pre>
+            </div><br>
+
+            今後はこのRun関数の中に色々と実装していければなと考えています。<br>
+            <h3>画像読み込み</h3>
+            せっかくなのでさっき作ったゲームクラスにPlayerを加えてみようと思います。<br>
+            仕様としましては<br>
+            ↑↓→←で操作ができるようにする、たったこれだけにします。<br><br>
+
+            ということで画像を読み込んで動かしてみます。<br>
+            以下Playerの画像を読み込んで、操作するまでの各コードです<br><br>
+
+            <!--Player.hppのコードはここから-->
+            <div class="code-text">Player.hpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#pragma once
+
+#include "DxLib.h"
+#include "Vector2.hpp"
+#include &lt;string&gt;
+#include &lt;cassert&gt;
+
+
+class Player
+{
+public:
+	void Draw()const;
+	void Initialize();
+	void Control();
+protected:
+private:
+	int m_graph = 0;
+	float m_speed = 10.0f;
+	Vector2 m_pos{ 0,0 };
+	const std::string m_fileName = "../images/butter.jpg";
+};</code></pre>
+            </div><br>
+
+            <!--Player.cppのコードはここから-->
+            <div class="code-text">Player.cpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#include "Player.hpp"
+
+void Player::Draw() const
+{
+	DrawGraph(m_pos.x, m_pos.y, m_graph, TRUE);
+}
+
+void Player::Initialize()
+{
+	m_graph = LoadGraph(m_fileName.c_str());
+	assert(m_graph != -1);
+}
+
+void Player::Control()
+{
+
+	if (CheckHitKey(KEY_INPUT_UP))
+	{
+		m_pos.y -= m_speed;
+	}
+
+	if (CheckHitKey(KEY_INPUT_DOWN))
+	{
+		m_pos.y += m_speed;
+	}
+
+	if (CheckHitKey(KEY_INPUT_RIGHT))
+	{
+		m_pos.x += m_speed;
+	}
+
+	if (CheckHitKey(KEY_INPUT_LEFT))
+	{
+		m_pos.x -= m_speed;
+	}
+}</code></pre>
+            </div><br>
+            <!--Game.Runのコードはここから-->
+            <div class="code-text">Game.cpp/Run</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>void Game::Run()
+{
+	while (ProcessMessage() == 0)
+	{
+		if (CheckHitKey(KEY_INPUT_ESCAPE))
+		{
+			break;
+		}
+
+		// Cal.
+		m_player.Control();
+
+		// Draw.
+		ClearDrawScreen();
+		DrawBox(100, 100, 980, 620, GetColor(255, 255, 0), TRUE);
+		m_player.Draw();
+
+		ScreenFlip();
+	}
+}</code></pre>
+            </div><br>
+            今回は簡単にテストのような形でGame.hppにメンバ変数としてPlayerを追加しました。<br>
+            これで動いた映像が下です。<br>
+
+            <img src="images/Article02_1.gif" alt="プレイヤー操作成功の図" width="480"><br><br><br>
+
+            今回の目的である『クラス分け』と『画像を描画してみる』を両方とも達成できたので、<br>
+            大成功な結果になりました！<br><br>
+
+            本記事は以上です！ありがとうございました。<br>
+            <p class="annotation-header"><br>
+        </body>
+
+        <footer>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="https://x.com/_cheese_2916" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-brands fa-square-twitter" id="twitter-ico"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <img src="../../images/Page01QR.png" alt="QRコード" id="qr-ico">
+                    </li>
+                </ul>
+            </nav>
+        </footer>
+    </div>
+</body>
+
+</html>
