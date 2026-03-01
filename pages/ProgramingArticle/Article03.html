@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ばた～の部屋/マウスの取得～ボタン設計</title>
+    <meta name="description" content="ゲーム・プログラミングなどの備忘録">
+    <meta charset="UTF-8">
+    <link rel="icon" href="../../images/butter.jpg">
+    <link rel="stylesheet" href="css/Article01Style.css">
+    <link href="https://use.fontawesome.com/releases/v7.2.0/css/all.css" rel="stylesheet">
+    <script src="script/Article01Script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                ばた～の部屋
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html" class="btn-border-bottom">ホーム</a></li>
+                    <li><a href="../gamepage.html" class="btn-border-bottom">ゲーム</a></li>
+                    <li><a href="../programingpage.html" class="btn-border-bottom">プログラミング</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <body>
+            <h2>マウスの取得～ボタン設計</h2>
+            <p>最終更新日 2026/03/01</p>
+
+            <p>★本記事ではDxLibでマウスの入力値など取得～ボタンを簡単に作ってみるところまでを目標にしています。</p>
+            参考にした関数リファレンスサイトは<a href="https://dxlib.xsrv.jp/dxfunc.html" target="_blank">こちら</a>
+
+            <h3>マウスの取得～ボタン設計</h3>
+            編集中によりコードのみ失礼します。<br><br>
+
+            <!--GameObject.hppはここから-->
+            <div class="code-text">GameObject.hpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#pragma once
+
+#include "IUpdatable.hpp"
+#include "IRenderable.hpp"
+
+class GameObject : public IUpdatable, public IRenderable
+{
+public:
+	virtual ~GameObject() = default;
+};</code></pre>
+            </div><br>
+
+            <!--Mouse.hppはここから-->
+            <div class="code-text">Mouse.hpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#pragma once
+
+#include "DxLib.h"
+#include "Vector2.hpp"
+#include "GameObject.hpp"
+
+class Mouse : public GameObject
+{
+public:
+	void Initialize();
+
+	void Update() override { Control(); }
+	void Render() const override;
+
+	const Vector2<int>& GetPosition()const;
+	const bool GetLeftInputState()const;
+	const bool GetRightInputState()const;
+	const bool GetMiddleInputState()const;
+protected:
+private:
+	void Control();
+
+	Vector2<int> m_position{ 0,0 };
+	int m_mouseInput = 0;
+	int m_logType = 0;
+
+	bool m_isLeftPushed = false;
+	bool m_isRightPushed = false;
+	bool m_isMiddlePushed = false;
+	//---Debug---//
+
+	int m_debugTextColor = 0;
+	int m_fontHandle = 0;
+};</code></pre>
+            </div><br>
+
+            <!--Button.hppはここから-->
+            <div class="code-text">Button.hpp</div>
+            <div class="code-block">
+                <button class="copy-btn">コピー</button>
+                <pre><code>#pragma once
+
+#include "DxLib.h"
+#include "GameObject.hpp"
+#include "Mouse.hpp"
+
+#include "Vector2.hpp"
+
+#include <queue>
+#include <functional>
+
+class Button :public GameObject
+{
+public:
+	void Initialize(Mouse& m, const Vector2<int>& topLeft, const Vector2<int>& downRight);
+	void Render()const override;
+	void Update()override;
+
+	void Register(const std::function<void()> e);
+protected:
+private:
+	void ChangeColorEvent();
+	void ChangeDrawFlag();
+
+	Vector2<int> m_topLeftVertex{ 100,100 };
+	Vector2<int> m_downRightVertex{ 980,620 };
+
+	Mouse* m_mouse = nullptr;
+	std::queue<std::function<void()>> m_onClick;
+
+	int m_color = GetColor(255, 255, 255);
+	bool m_isPusshed = false;
+	bool m_drawEventFlag = false;
+};</code></pre>
+            </div><br>
+            <p class="annotation-header"><br>
+        </body>
+
+        <footer>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="https://x.com/_cheese_2916" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-brands fa-square-twitter" id="twitter-ico"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <img src="../../images/Page01QR.png" alt="QRコード" id="qr-ico">
+                    </li>
+                </ul>
+            </nav>
+        </footer>
+    </div>
+</body>
+
+</html>
