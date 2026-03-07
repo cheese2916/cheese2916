@@ -34,7 +34,10 @@
             参考にした関数リファレンスサイトは<a href="https://dxlib.xsrv.jp/dxfunc.html" target="_blank">こちら</a>
 
             <h3>マウスの取得～ボタン設計</h3>
-            編集中によりコードのみ失礼します。<br><br>
+            今まで使ってきたUnityにならって、GameObjectというクラスを設計してみようと思います。<br>
+            今回は簡単に、UpdateとRenderのみを関数として実装します。<br>
+            雑にはなりますが、小規模かつ一度は完成させたいという思いからこのような設計になりました。<br><br>
+            さて、下記にコードを記します。<br>
 
             <!--GameObject.hppはここから-->
             <div class="code-text">GameObject.hpp</div>
@@ -51,6 +54,13 @@ public:
 	virtual ~GameObject() = default;
 };</code></pre>
             </div><br>
+
+            以上がGameObjectの設計図になります。<br>
+            Updateの関数及び、Renderの関数はインターフェースとして実装してあります。<br>
+            それを継承する形で制作してあります。<br><br>
+
+            次にボタンを作っていくのですが、ボタンを押す際にマウスの入力判定が必要なので<br>
+            先にマウスの入力検知機を設計しておきます。<br><br>
 
             <!--Mouse.hppはここから-->
             <div class="code-text">Mouse.hpp</div>
@@ -92,6 +102,11 @@ private:
 };</code></pre>
             </div><br>
 
+            簡単に左クリック、右クリック、中クリックの入力検知を用意しました。<br>
+            また、入力検知位置及び入力タイプの判定には、GetMouseInputLog2()を利用しています。<br><br>
+
+            いよいよボタンの設計です。<br>
+
             <!--Button.hppはここから-->
             <div class="code-text">Button.hpp</div>
             <div class="code-block">
@@ -115,11 +130,11 @@ public:
 	void Update()override;
 
 	void Register(const std::function<void()> e);
+
+	bool Interactive = true;
+	bool Enabled = true;
 protected:
 private:
-	void ChangeColorEvent();
-	void ChangeDrawFlag();
-
 	Vector2<int> m_topLeftVertex{ 100,100 };
 	Vector2<int> m_downRightVertex{ 980,620 };
 
@@ -131,6 +146,20 @@ private:
 	bool m_drawEventFlag = false;
 };</code></pre>
             </div><br>
+
+            このボタン、実はかなり苦労しました。<br><br>
+            　・どこで押されてどこで離されたかをずっと監視する<br>
+            　・ボタン以外の場所でクリックし、その状態を維持してボタンの上へホバーすると、クリックした判定になるバグ<br>
+            　・描画処理側では基本的にメンバ変数をいじりたくないが、描画イベントが発生したときにどうするか考えないといけないところ<br><br>
+            など、さまざまありましたが、試行錯誤の上に何とか完成しました。<br><br>
+
+            そして完成したのが...こちら<br>
+            <img src="../../pages/ProgramingArticle/images/Article03_1.gif" alt="" width="620px"><br>
+
+            本記事は以上です！ありがとうございました！<br>
+            コードまみれで申し訳ないです！<br>
+            次回、ボタンでゲームを作ってみるの巻<br>
+
             <p class="annotation-header"><br>
         </body>
 
